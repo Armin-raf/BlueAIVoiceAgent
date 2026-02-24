@@ -5,32 +5,44 @@ export default function BpWidgets() {
 
   return (
     <>
-      {/* Floating Buttons */}
-      <div style={{
-        position: "fixed",
-        right: "20px",
-        bottom: "20px",
-        display: "flex",
-        gap: "12px",
-        zIndex: 9999
-      }}>
-        {/* Chat Button */}
+      {/* Widget Container */}
+      <div
+        style={{
+          position: "fixed",
+          right: "20px",
+          bottom: "20px",
+          display: "flex",
+          flexDirection: "column",
+          gap: "14px",
+          zIndex: 9999,
+        }}
+      >
+        {/* 💬 Chat oben */}
         <button
           onClick={() => setOpen(!open)}
           style={{
-            width: 56,
-            height: 56,
+            width: 60,
+            height: 60,
             borderRadius: "50%",
             border: "none",
             background: "#2563eb",
             color: "white",
-            cursor: "pointer"
+            fontSize: "22px",
+            cursor: "pointer",
+            transition: "all 0.25s ease",
+            boxShadow: "0 15px 40px rgba(0,0,0,0.3)",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = "scale(1.1)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = "scale(1)";
           }}
         >
           💬
         </button>
 
-        {/* Voice Button */}
+        {/* 📞 Voice unten */}
         <button
           onClick={() =>
             window.open(
@@ -39,13 +51,22 @@ export default function BpWidgets() {
             )
           }
           style={{
-            width: 56,
-            height: 56,
+            width: 60,
+            height: 60,
             borderRadius: "50%",
             border: "none",
             background: "#10b981",
             color: "white",
-            cursor: "pointer"
+            fontSize: "22px",
+            cursor: "pointer",
+            transition: "all 0.25s ease",
+            boxShadow: "0 15px 40px rgba(0,0,0,0.3)",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = "scale(1.1)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = "scale(1)";
           }}
         >
           📞
@@ -58,14 +79,14 @@ export default function BpWidgets() {
           style={{
             position: "fixed",
             right: "20px",
-            bottom: "95px",
+            bottom: "100px",
             width: "400px",
             height: "600px",
             background: "#0b0f1a",
             borderRadius: "16px",
             overflow: "hidden",
             boxShadow: "0 25px 80px rgba(0,0,0,0.6)",
-            zIndex: 9999
+            zIndex: 9999,
           }}
         >
           <iframe
