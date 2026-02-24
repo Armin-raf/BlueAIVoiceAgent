@@ -138,7 +138,11 @@ export default function BpWidgets() {
 
       {open && (
         <div className={`bp-popup ${min ? "bp-popup--min" : ""}`} role="dialog" aria-label="Chat">
-          <div className="bp-popup__header">
+          <div
+            className="bp-popup__header"
+            onClick={min ? minimizeChat : undefined}
+            style={{ cursor: min ? "pointer" : "default" }}
+          >
             <div className="bp-popup__title">Blue Process Chat</div>
 
             <div className="bp-popup__controls">
@@ -149,9 +153,9 @@ export default function BpWidgets() {
                 aria-label={min ? "Chat maximieren" : "Chat minimieren"}
                 title={min ? "Maximieren" : "Minimieren"}
               >
-                –
+                {min ? "+" : "–"}
               </button>
-
+      
               <button
                 type="button"
                 className="bp-popup__btn"
