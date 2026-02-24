@@ -9,19 +9,37 @@ const VOICE_URL =
 
 export default function BpWidgets() {
   const [open, setOpen] = useState(false);
+  const [min, setMin] = useState(false);
 
-  // ESC closes popup
+  // ESC schließt komplett
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
+      if (e.key === "Escape") {
+        setOpen(false);
+        setMin(false);
+      }
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   }, []);
 
+  const toggleChat = () => {
+    setOpen((v) => {
+      const next = !v;
+      if (!next) setMin(false);
+      return next;
+    });
+  };
+
+  const minimizeChat = () => setMin((v) => !v);
+
+  const closeChat = () => {
+    setOpen(false);
+    setMin(false);
+  };
+
   const openVoice = () => {
-    // noopener/noreferrer is recommended for security when using window.open. (MDN)
-    window.open(VOICE_URL, "_blank", "noopener,noreferrer"); // https://developer.mozilla.org/en-US/docs/Web/API/Window/open
+    window.open(VOICE_URL, "_blank", "noopener,noreferrer"); // MDN empfiehlt noopener: https://developer.mozilla.org/en-US/docs/Web/API/Window/open
   };
 
   return (
@@ -33,20 +51,19 @@ export default function BpWidgets() {
           className="bp-fab bp-fab--float"
           aria-label={open ? "Chat schließen" : "Chat öffnen"}
           aria-expanded={open}
-          onClick={() => setOpen((v) => !v)}
+          onClick={toggleChat}
         >
           <span className="bp-tooltip">Unser Chatbot hilft Ihnen sofort weiter.</span>
 
-          {/* Gradient Chat Bubble */}
           <svg className="bp-icon" viewBox="0 0 24 24" aria-hidden="true">
             <defs>
               <linearGradient id="bpChatGrad" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0" stopColor="#60a5fa" />
+                <stop offset="0" stopColor="#7dd3fc" />
                 <stop offset="0.55" stopColor="#2563eb" />
                 <stop offset="1" stopColor="#1d4ed8" />
               </linearGradient>
               <filter id="bpGlow" x="-50%" y="-50%" width="200%" height="200%">
-                <feGaussianBlur stdDeviation="2.2" result="blur" />
+                <feGaussianBlur stdDeviation="2.4" result="blur" />
                 <feColorMatrix
                   in="blur"
                   type="matrix"
@@ -78,18 +95,19 @@ export default function BpWidgets() {
           aria-label="Voice Agent öffnen"
           onClick={openVoice}
         >
-          <span className="bp-tooltip">Rufen Sie unseren KI-Assistenten an – schnell &amp; unkompliziert.</span>
+          <span className="bp-tooltip">
+            Rufen Sie unseren KI-Assistenten an – schnell &amp; unkompliziert.
+          </span>
 
-          {/* Gradient Phone */}
           <svg className="bp-icon" viewBox="0 0 24 24" aria-hidden="true">
             <defs>
               <linearGradient id="bpPhoneGrad" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0" stopColor="#34d399" />
+                <stop offset="0" stopColor="#6ee7b7" />
                 <stop offset="0.6" stopColor="#10b981" />
                 <stop offset="1" stopColor="#059669" />
               </linearGradient>
               <filter id="bpGlow2" x="-50%" y="-50%" width="200%" height="200%">
-                <feGaussianBlur stdDeviation="2.2" result="blur" />
+                <feGaussianBlur stdDeviation="2.4" result="blur" />
                 <feColorMatrix
                   in="blur"
                   type="matrix"
@@ -119,8 +137,36 @@ export default function BpWidgets() {
       </div>
 
       {open && (
-        <div className="bp-popup" role="dialog" aria-label="Chat">
-          <iframe src={CHAT_URL} title="Chat" />
+        <div className={`bp-popup ${min ? "bp-popup--min" : ""}`} role="dialog" aria-label="Chat">
+          <div className="bp-popup__header">
+            <div className="bp-popup__title">Blue Process Chat</div>
+
+            <div className="bp-popup__controls">
+              <button
+                type="button"
+                className="bp-popup__btn"
+                onClick={minimizeChat}
+                aria-label={min ? "Chat maximieren" : "Chat minimieren"}
+                title={min ? "Maximieren" : "Minimieren"}
+              >
+                –
+              </button>
+
+              <button
+                type="button"
+                className="bp-popup__btn"
+                onClick={closeChat}
+                aria-label="Chat schließen"
+                title="Schließen"
+              >
+                ×
+              </button>
+            </div>
+          </div>
+
+          <div className="bp-popup__body">
+            <iframe src={CHAT_URL} title="Chat" />
+          </div>
         </div>
       )}
     </>
