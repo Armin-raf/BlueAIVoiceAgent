@@ -1,98 +1,126 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import "./BpWidgets.css";
+
+const CHAT_URL =
+  "https://hypobranchial-inez-nonmonogamous.ngrok-free.dev/webhook/f406671e-c954-4691-b39a-66c90aa2f103/chat";
+
+const VOICE_URL =
+  "https://hypobranchial-inez-nonmonogamous.ngrok-free.dev/webhook-test/c6e462b3-86c6-4812-a58c-bfd8fe4ef882";
 
 export default function BpWidgets() {
   const [open, setOpen] = useState(false);
 
+  // ESC closes popup
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, []);
+
+  const openVoice = () => {
+    // noopener/noreferrer is recommended for security when using window.open. (MDN)
+    window.open(VOICE_URL, "_blank", "noopener,noreferrer"); // https://developer.mozilla.org/en-US/docs/Web/API/Window/open
+  };
+
   return (
     <>
-      {/* Widget Container */}
-      <div
-        style={{
-          position: "fixed",
-          right: "20px",
-          bottom: "20px",
-          display: "flex",
-          flexDirection: "column",
-          gap: "14px",
-          zIndex: 9999,
-        }}
-      >
-        {/* 💬 Chat oben */}
+      <div className="bp-fab-stack" aria-label="Blue Process Widgets">
+        {/* Chat icon (oben) */}
         <button
-          onClick={() => setOpen(!open)}
-          style={{
-            width: 60,
-            height: 60,
-            borderRadius: "50%",
-            border: "none",
-            background: "#2563eb",
-            color: "white",
-            fontSize: "22px",
-            cursor: "pointer",
-            transition: "all 0.25s ease",
-            boxShadow: "0 15px 40px rgba(0,0,0,0.3)",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.transform = "scale(1.1)";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.transform = "scale(1)";
-          }}
+          type="button"
+          className="bp-fab bp-fab--float"
+          aria-label={open ? "Chat schließen" : "Chat öffnen"}
+          aria-expanded={open}
+          onClick={() => setOpen((v) => !v)}
         >
-          💬
+          <span className="bp-tooltip">Unser Chatbot hilft Ihnen sofort weiter.</span>
+
+          {/* Gradient Chat Bubble */}
+          <svg className="bp-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <defs>
+              <linearGradient id="bpChatGrad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stopColor="#60a5fa" />
+                <stop offset="0.55" stopColor="#2563eb" />
+                <stop offset="1" stopColor="#1d4ed8" />
+              </linearGradient>
+              <filter id="bpGlow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="2.2" result="blur" />
+                <feColorMatrix
+                  in="blur"
+                  type="matrix"
+                  values="
+                    1 0 0 0 0
+                    0 1 0 0 0
+                    0 0 1 0 0
+                    0 0 0 0.55 0"
+                />
+                <feMerge>
+                  <feMergeNode />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
+
+            <path
+              d="M20 2H4C2.9 2 2 2.9 2 4v12c0 1.1.9 2 2 2h3v4l5-4h8c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"
+              fill="url(#bpChatGrad)"
+              filter="url(#bpGlow)"
+            />
+          </svg>
         </button>
 
-        {/* 📞 Voice unten */}
+        {/* Phone icon (unten) */}
         <button
-          onClick={() =>
-            window.open(
-              "https://hypobranchial-inez-nonmonogamous.ngrok-free.dev/webhook-test/c6e462b3-86c6-4812-a58c-bfd8fe4ef882",
-              "_blank"
-            )
-          }
-          style={{
-            width: 60,
-            height: 60,
-            borderRadius: "50%",
-            border: "none",
-            background: "#10b981",
-            color: "white",
-            fontSize: "22px",
-            cursor: "pointer",
-            transition: "all 0.25s ease",
-            boxShadow: "0 15px 40px rgba(0,0,0,0.3)",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.transform = "scale(1.1)";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.transform = "scale(1)";
-          }}
+          type="button"
+          className="bp-fab bp-fab--float2"
+          aria-label="Voice Agent öffnen"
+          onClick={openVoice}
         >
-          📞
+          <span className="bp-tooltip">Rufen Sie unseren KI-Assistenten an – schnell &amp; unkompliziert.</span>
+
+          {/* Gradient Phone */}
+          <svg className="bp-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <defs>
+              <linearGradient id="bpPhoneGrad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stopColor="#34d399" />
+                <stop offset="0.6" stopColor="#10b981" />
+                <stop offset="1" stopColor="#059669" />
+              </linearGradient>
+              <filter id="bpGlow2" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="2.2" result="blur" />
+                <feColorMatrix
+                  in="blur"
+                  type="matrix"
+                  values="
+                    1 0 0 0 0
+                    0 1 0 0 0
+                    0 0 1 0 0
+                    0 0 0 0.55 0"
+                />
+                <feMerge>
+                  <feMergeNode />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
+
+            <path
+              d="M6.6 10.8c1.4 2.7 3.9 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1.1-.3
+                 1.2.4 2.5.6 3.8.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C11.3 21 3 12.7 3 2
+                 c0-.6.4-1 1-1h3.3c.6 0 1 .4 1 1 0 1.3.2 2.6.6 3.8.1.4 0 .8-.3 1.1l-2
+                 1.9z"
+              fill="url(#bpPhoneGrad)"
+              filter="url(#bpGlow2)"
+            />
+          </svg>
         </button>
       </div>
 
-      {/* Chat Popup */}
       {open && (
-        <div
-          style={{
-            position: "fixed",
-            right: "20px",
-            bottom: "100px",
-            width: "400px",
-            height: "600px",
-            background: "#0b0f1a",
-            borderRadius: "16px",
-            overflow: "hidden",
-            boxShadow: "0 25px 80px rgba(0,0,0,0.6)",
-            zIndex: 9999,
-          }}
-        >
-          <iframe
-            src="https://hypobranchial-inez-nonmonogamous.ngrok-free.dev/webhook/f406671e-c954-4691-b39a-66c90aa2f103/chat"
-            style={{ width: "100%", height: "100%", border: "none" }}
-          />
+        <div className="bp-popup" role="dialog" aria-label="Chat">
+          <iframe src={CHAT_URL} title="Chat" />
         </div>
       )}
     </>
