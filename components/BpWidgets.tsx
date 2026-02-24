@@ -146,10 +146,13 @@ export default function BpWidgets() {
             <div className="bp-popup__title">Blue Process Chat</div>
 
             <div className="bp-popup__controls">
-              <button
+              <button           
                 type="button"
                 className="bp-popup__btn"
-                onClick={minimizeChat}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  minimizeChat();
+                }}
                 aria-label={min ? "Chat maximieren" : "Chat minimieren"}
                 title={min ? "Maximieren" : "Minimieren"}
               >
@@ -159,7 +162,10 @@ export default function BpWidgets() {
               <button
                 type="button"
                 className="bp-popup__btn"
-                onClick={closeChat}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  closeChat();
+                }}
                 aria-label="Chat schließen"
                 title="Schließen"
               >
